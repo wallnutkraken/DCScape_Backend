@@ -14,6 +14,7 @@ type World struct {
 	Hostname string `json:"host"`
 	Type     string `json:"type"`
 	Activity string `json:"activity"`
+	Players  int    `json:"players"`
 }
 
 type WorldPlayers struct {
@@ -46,6 +47,8 @@ func getWorlds() ([]byte, error) {
 			world.Hostname = ips[0].String()
 		}
 		world.Activity = sel.Find(".server-list__row-cell").Last().Text()
+		playersText := sel.Find(".server-list__row-cell").First().Next().Text()
+		world.Players, _ = strconv.Atoi(strings.Replace(playersText, " players", "", -1))
 
 		worlds = append(worlds, world)
 	})
